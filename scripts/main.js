@@ -2,12 +2,19 @@
 function formatNumberWithCommas(value) {
     // Remove non-numeric characters except decimal point
     const cleanValue = value.replace(/[^0-9.]/g, '');
+    // If empty or just a decimal point, return empty string
+    if (cleanValue === '' || cleanValue === '.') {
+        return '';
+    }
     // Split into integer and decimal parts
     const parts = cleanValue.split('.');
     const integerPart = parts[0];
     const decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-    // Add commas to integer part
-    return parseInt(integerPart).toLocaleString('en-US') + decimalPart;
+    // Only format if integerPart is a valid number
+    if (integerPart && !isNaN(parseInt(integerPart))) {
+        return parseInt(integerPart).toLocaleString('en-US') + decimalPart;
+    }
+    return cleanValue; // Return as-is if invalid
 }
 
 function toggleUnits() {
@@ -72,7 +79,7 @@ function calculateMinDepth() {
     formula = `<b>Calculation details:</b><br><br>` +
              `\\[ \\text{Ratio from table:} \\ \\frac{l}{${ratio}} \\]` +
              `\\[ \\text{Adjustment factor for } f_y: \\ (0.4 + \\frac{f_y}{${units === 'imperial' ? '100,000' : '700'}}) \\]` +
-             `\\[ \\text{Adjustment factor for } f_y: \\ = (0.4 + \\frac{${formattedFy}}{${units === 'imperial' ? '100,000' : '700'}}) \\]` + 
+             `\\[ \\text{Adjustment factor for } f_y: \\ = (0.4 + \\frac{${formattedFy}}{${units === 'imperial' ? '100,000' : '700'}}) \\]` +
              `\\[ = ${fyFactor.toFixed(2)} \\]` +
              `\\[ h = \\frac{\\text{Span} \\times ${formattedConversionFactor}}{${ratio}} \\times ${fyFactor.toFixed(2)} \\]` +
              `\\[ h = \\frac{(${formattedSpan} \\times ${formattedConversionFactor})}{${ratio}} \\times ${fyFactor.toFixed(2)} \\]` +
@@ -88,7 +95,8 @@ function calculateMinDepth() {
 document.getElementById('fy').addEventListener('input', function(e) {
     const cursorPosition = e.target.selectionStart;
     const value = e.target.value;
-    if (/^\d*\.?\d*$/.test(value.replace(/,/g, ''))) { // Allow digits and one decimal point
+    // Allow empty input or valid number (digits, optional decimal)
+    if (value === '' || /^\d*\.?\d*$/.test(value.replace(/,/g, ''))) {
         const formattedValue = formatNumberWithCommas(value);
         e.target.value = formattedValue;
         // Restore cursor position (adjust for added/removed commas)
