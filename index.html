@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimum Thickness of Solid Non-prestressed One-way Slab</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <!-- MathJax Configuration and Loading (Default Font with Wrapping) -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            },
+            chtml: {
+                scale: 1.0,
+                matchFontHeight: true,
+                linebreaks: { automatic: true, linebreakContainer: true }
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    MathJax.typesetPromise();
+                }
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <main>
+        <header class="navbar" role="banner">
+            <img src="file:///C:/Users/Rod/Desktop/CivilEngineeringNotes/images/celogo.svg" alt="Logo" class="logo">
+        </header>
+        <div class="container">
+            <div class="form-container">
+                <h6>Minimum Thickness (h) of Solid<br>Non-Prestressed One-Way Slab<br>ACI 318-19</h6>
+                <form id="beamForm">
+                    <label for="units">Select Units:</label>
+                    <select id="units" name="units">
+                        <option value="imperial">Imperial (ft, psi)</option>
+                        <option value="si">SI (m, MPa)</option>
+                    </select>
+
+                    <label for="span">Enter One-Way Slab Span (<span id="spanUnit">feet</span>):</label>
+                    <input type="text" id="span" name="span" placeholder="Enter span length" required>
+
+                    <label for="fy">Enter Yield Strength (fy) (<span id="fyUnit">psi</span>):</label>
+                    <input type="text" id="fy" name="fy" placeholder="Enter yield strength" value="60,000" required>
+
+                    <label for="condition">Select Support Condition:</label>
+                    <select id="condition" name="condition">
+                        <option value="simplySupported">Simply Supported</option>
+                        <option value="oneEndContinuous">One End Continuous</option>
+                        <option value="bothEndsContinuous">Both Ends Continuous</option>
+                        <option value="cantilever">Cantilever</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="result-container">
+                <strong>Calculation Result:</strong><br>
+                <p>Minimum depth, <b>h: <span id="minDepth">--</span></b></p>
+                <div class="calculation-details" id="details"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <img src="file:///C:/Users/Rod/Desktop/CivilEngineeringNotes/images/cenoteslogo.png" alt="Logo">
+            </div>
+            <span>© 2025 All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>
