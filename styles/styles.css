@@ -85,7 +85,7 @@ input, select {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 16px;
     transition: border-color 0.3s;
 }
@@ -98,7 +98,7 @@ input:focus, select:focus {
 .result-container {
     flex-grow: 0;
     flex-basis: 48%;
-    min-width: 300px;
+    min-width: 320px;
     background-color: #e6e6fa;
     padding: 20px;
     border-radius: 8px;
@@ -130,6 +130,30 @@ b { font-weight: bold; }
     font-size: 16px !important;
     color: #666 !important;
     overflow-wrap: break-word;
+}
+
+/* CTA Button Styling */
+.cta-button {
+    width: 288px;
+    height: 40px;
+    background-color: #e6e6fa;
+    color: #3F3F3F;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 15px auto 0; /* Center with top margin */
+    text-align: center; /* Center text */
+    display: none; /* Hidden by default, shown in mobile via JS */
+}
+
+.cta-button p {
+    margin: 0; /* Remove default margin from p */
+    line-height: 40px; /* Vertically center text */
+}
+
+.cta-button b {
+    color: #3F3F3F; /* Match button text color */
+    font-weight: 700; /* Ensure bold text */
 }
 
 /* Footer Section */
@@ -166,7 +190,7 @@ b { font-weight: bold; }
         flex-basis: 100%;
     }
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 780px) {
     .container {
         padding: 15px;
         margin: 10px;
@@ -179,4 +203,7 @@ b { font-weight: bold; }
     input, select { font-size: 14px; }
     .calculation-details { font-size: 14px; }
     .MathJax, .MathJax_Display { font-size: 14px !important; }
+    .cta-button {
+        display: block; /* Show button in mobile view */
+    }
 }
