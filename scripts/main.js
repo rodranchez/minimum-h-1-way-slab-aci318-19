@@ -32,21 +32,21 @@ function toggleUnits() {
         spanUnit.innerText = 'feet';
         fyUnit.innerText = 'psi';
         if (currentFy) {
-            // Convert MPa to psi: 1 MPa = 145.03773773375 psi
-            fyInput.value = formatNumberWithCommas((currentFy * 145.03773773375).toString(), units);
+            // Convert MPa to psi: 1 MPa = 145.03773773020924409138 psi
+            fyInput.value = formatNumberWithCommas((currentFy * 145.03773773020924409138).toString(), units);
         } else {
             fyInput.value = formatNumberWithCommas('60000', units); // Default 60,000 psi
         }
         if (currentSpan) {
-            // Convert meters to feet: 1 m = 3.280839895 ft
-            spanInput.value = formatNumberWithCommas((currentSpan * 3.280839895).toString(), units, true);
+            // Convert meters to feet: 1 m = 3.2808398950131233596 ft
+            spanInput.value = formatNumberWithCommas((currentSpan * 3.2808398950131233596).toString(), units, true);
         }
     } else {
         spanUnit.innerText = 'meters';
         fyUnit.innerText = 'MPa';
         if (currentFy) {
-            // Convert psi to MPa: 1 psi = 0.00689476 MPa
-            fyInput.value = formatNumberWithCommas((currentFy * 0.00689476).toString(), units);
+            // Convert psi to MPa: 1 psi = 0.00689475729316836 MPa
+            fyInput.value = formatNumberWithCommas((currentFy * 0.00689475729316836).toString(), units);
         } else {
             fyInput.value = formatNumberWithCommas('414', units); // Default 414 MPa
         }
@@ -87,6 +87,7 @@ function calculateMinDepth() {
 
     minDepth = (span * conversionFactor / ratio) * fyFactor;
 
+    // Format numbers with commas
     const formattedMinDepth = minDepth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const formattedSpan = span.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: units === 'si' ? 4 : 2 });
     const formattedFy = fy.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: units === 'si' ? 4 : 2 });
@@ -198,6 +199,54 @@ document.getElementById('condition').addEventListener('change', calculateMinDept
 document.getElementById('units').addEventListener('change', toggleUnits);
 window.addEventListener('resize', manageCTAButton);
 
+// Theme Toggle Functionality
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const themeIcon = document.querySelector('.theme-icon');
+    const themeLabel = document.querySelector('.theme-label');
+    
+    if (themeIcon) {
+        themeIcon.src = theme === 'dark' ? 'images/moon-icon.svg' : 'images/sun-icon.svg';
+        themeIcon.alt = theme === 'dark' ? 'Dark mode' : 'Light mode';
+    }
+    if (themeLabel) {
+        themeLabel.textContent = theme === 'dark' ? 'Dark' : 'Light';
+    }
+    // Always store the theme to persist user preference
+    localStorage.setItem('theme', theme);
+}
+
+function initializeTheme() {
+    // Check for stored theme first
+    let savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // If no saved theme, use system preference
+    if (!savedTheme) {
+        savedTheme = prefersDark ? 'dark' : 'light';
+    }
+    
+    setTheme(savedTheme);
+    
+    const themeToggleButton = document.querySelector('.theme-toggle');
+    if (themeToggleButton) {
+        themeToggleButton.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+    }
+}
+
+// Update theme on system color scheme change
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    // Only update if no user preference is stored
+    if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light');
+    }
+});
+
 // Initialize
+initializeTheme();
 manageCTAButton();
 calculateMinDepth();
